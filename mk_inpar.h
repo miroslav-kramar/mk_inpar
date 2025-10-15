@@ -51,6 +51,7 @@ static inline mk_status_t mk_scanner_get_status(mk_scanner_t * scanner);
 static inline void mk_scanner_clear_status(mk_scanner_t * scanner);
 static inline void mk_scanner_set_delim(mk_scanner_t * scanner, const char * delim);
 static inline void mk_scanner_clear_input(mk_scanner_t * scanner);
+static inline bool mk_scanner_newline_found(mk_scanner_t * scanner);
 static inline size_t mk_scanner_get_str(mk_scanner_t * scanner, char * buffer, size_t buffer_length);
 static inline int64_t mk_scanner_get_i64(mk_scanner_t * scanner);
 static inline int32_t mk_scanner_get_i32(mk_scanner_t * scanner);
@@ -498,7 +499,9 @@ static inline void mk_scanner_set_delim(mk_scanner_t * scanner, const char * del
 }
 
 static inline void mk_scanner_clear_input(mk_scanner_t * scanner) {
-    if (scanner->newline_found) {return;}
+    if (scanner->newline_found) {
+        return;
+    }
     int c;
     do {
         c = fgetc(scanner->istream);
@@ -524,7 +527,7 @@ static inline size_t mk_scanner_get_str(mk_scanner_t * scanner, char * buffer, s
         const int c = fgetc(scanner->istream);
         if (c == EOF) {
             if (ferror(scanner->istream)) {goto ERR_FERROR;}
-            if (token_length == 0)   {goto ERR_EOF_NO_CHAR;}
+            if (token_length == 0) {goto ERR_EOF_NO_CHAR;}
             break;
         }
         else if (c == '\n') {

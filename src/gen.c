@@ -391,6 +391,7 @@ void generate_source_code_file(FILE * target) {
     place_func_decl(target, func_scanner_clear_status);
     place_func_decl(target, func_scanner_set_delim);
     place_func_decl(target, func_scanner_clear_input);
+    place_func_decl(target, func_scanner_newline_found);
     place_func_decl(target, func_scanner_get_str);
     for (int i = 0; i < N_OF_TYPES; i++) {
         place_func_decl(target, func_scanner_getters[i]);
